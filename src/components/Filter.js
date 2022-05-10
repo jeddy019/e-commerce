@@ -1,6 +1,6 @@
 import { useGlobalContext } from "./context";
 
-function Sidebar() {
+function Filter() {
   const { data, selectedSizes, setSelectedSizes } = useGlobalContext();
 
   const reducer = (acc, val) => {
@@ -42,4 +42,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Filter;
