@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import products from "../data.json";
 
 const AppContext = React.createContext();
@@ -9,22 +9,24 @@ function AppProvider({ children }) {
 
   let data = products.products;
 
-  // const handleLocalStorage = useCallback(() => {
-  //   localStorage.setItem("carts", JSON.stringify(cartItems));
-  // }, []);
+  const handleLocalStorage = useCallback(() => {
+    localStorage.setItem("carts", JSON.stringify(cartItems));
 
-  // useEffect(() => {
-  //   if (localStorage.carts) {
-  //     setCartItems(JSON.parse(localStorage.carts) || []);
-  //   }
+    if (localStorage.carts) {
+      setCartItems(JSON.parse(localStorage.carts) || []);
+    }
 
-  //   window.addEventListener("beforeunload", handleLocalStorage);
+    window.addEventListener("beforeunload", handleLocalStorage);
 
-  //   return () => {
-  //     console.log("event unmounted");
-  //     window.removeEventListener("beforeunload", handleLocalStorage);
-  //   };
-  // }, [handleLocalStorage]);
+    return () => {
+      console.log("event unmounted");
+      window.removeEventListener("beforeunload", handleLocalStorage);
+    };
+  }, [cartItems]);
+
+  useEffect(() => {
+    handleLocalStorage();
+  }, [cartItems, handleLocalStorage]);
 
   const incrementQuantity = (id) => {
     setCartItems((prevState) => {
